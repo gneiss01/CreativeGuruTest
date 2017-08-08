@@ -13,7 +13,7 @@ namespace TestWeb.Controllers
             this.productRepo = productRepo;
         }
 
-        public ActionResult List()
+        public ActionResult Index()
         {
             return View();
         }
