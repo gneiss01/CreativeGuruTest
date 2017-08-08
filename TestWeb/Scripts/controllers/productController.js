@@ -1,21 +1,22 @@
 ﻿app.controller('productController', ['$router', '$scope', '$location', '$rootScope', '$http', '$window', productController]);
 
 app.filter('searchFor', function () {
-    return function (products, searchText) {
+    function nameContains(product, text) {
+        return !text || product.DisplayName.toLowerCase().indexOf(text.toLowerCase()) !== -1;
+    }
 
-        if (!searchText) {
-            return products;
-        }
+    function withSameCategory(product, category) {
+        return !category || product.Category.Id === category.Id;
+    }
+
+    return function (products, filter) {
+        if (!filter || (!filter.Product && !filter.Category))
+            return products
 
         var result = [];
-
-        searchText = searchText.toLowerCase();
         angular.forEach(products, function (product) {
-
-            if (product.DisplayName.toLowerCase().indexOf(searchText) !== -1) {
+            if (nameContains(product, filter.Product) && withSameCategory(product, filter.Category))
                 result.push(product);
-            }
-
         });
 
         return result;
@@ -25,12 +26,33 @@ app.filter('searchFor', function () {
 function productController($router, $scope, $location, $rootScope, $http, $window) {
     var self = $scope;
 
+    self.productFilter =
+    {
+        Product: '',
+        Category: null
+    };
+
     self.products = [];
+    self.categories = [];
 
     self.init = function () {
+        self.initializeProducts();
+        self.initializeCategories();
+    }
+
+    self.initializeProducts = function () {
         $http.get("/Product/List")
             .success(function (products) {
                 self.products = products;
+            })
+            .error(function (error) {
+            });
+    }
+
+    self.initializeCategories = function () {
+        $http.get("/Product/Categories")
+            .success(function (categories) {
+                self.categories = categories;
             })
             .error(function (error) {
             });
