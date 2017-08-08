@@ -2,3 +2,29 @@
     ViewBag.Title = "Product List";
 }
 <h2>@ViewBag.Title</h2>
+<div ng-controller="productController">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Category</th>
+                        <th>Unit Price</th>
+                        <th>Is Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="product in products">
+                        <td>{{ product.DisplayName }}</td>
+                        <td>{{ product.Category.DisplayName }}</td>
+                        <td>{{ product.UnitPrice }}</td>
+                        <td>{{ product.IsActive }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/controllers/productController.js"></script>
