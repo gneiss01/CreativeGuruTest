@@ -55,6 +55,7 @@
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\ProductRepo.cs" />
     <Compile Include="Repository\Repository.cs" />
+    <Compile Include="StoreContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
