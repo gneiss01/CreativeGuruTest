@@ -105,5 +105,19 @@ namespace TestWeb
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+
+        public override Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool isPersistent, bool shouldLockout)
+        {
+            //TODO: authenticate user
+            var ident = new ClaimsIdentity(new[]
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, userName),
+                            new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
+                            new Claim(ClaimTypes.Name, $"{userName}"),
+                        }, DefaultAuthenticationTypes.ApplicationCookie);
+
+            this.AuthenticationManager.SignIn(ident);
+            return Task.FromResult(SignInStatus.Success);
+        }
     }
 }
