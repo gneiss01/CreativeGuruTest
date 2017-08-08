@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using TestWeb.Data.Model;
 using TestWeb.Data.Repository;
+using TestWeb.Models;
 
 namespace TestWeb.Controllers
 {
@@ -16,6 +18,12 @@ namespace TestWeb.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult List()
+        {
+            return new CustomJsonResult() { Data = this.productRepo.GetAll().ToList() };
         }
     }
 }
