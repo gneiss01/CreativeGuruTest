@@ -22,6 +22,11 @@ namespace TestWeb.Controllers
             return View();
         }
 
+        public ActionResult Manage()
+        {
+            return View();
+        }
+
         [HttpGet]
         public JsonResult List()
         {
