@@ -11,5 +11,7 @@ namespace TestWeb.Data.Repository
         T FindByKey(params object[] keyValues);
 
         List<T> GetAll();
+
+        void Save();
     }
 }
