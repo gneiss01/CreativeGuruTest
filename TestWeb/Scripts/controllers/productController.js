@@ -75,7 +75,7 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     }
 
     self.showCreateForm = function () {
-        self.productForm.mode = 'New';
+        self.productForm.isNew = true;
         self.productForm.title = self.newProductTitle;
         self.productForm.product =
         {
@@ -89,10 +89,11 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     }
 
     self.editProduct = function (product) {
-        self.productForm.mode = 'Edit';
+        self.productForm.isNew = false
         self.productForm.title = 'Update Product';
         self.productForm.product =
         {
+            Id: product.Id,
             DisplayName: product.DisplayName,
             UnitPrice: product.UnitPrice,
             IsActive: product.IsActive,
@@ -110,10 +111,16 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     }
 
     self.saveProduct = function () {
-        $http.post("/Product/Create", self.productForm.product)
+        var url = '/Product/Update';
+        if (self.productForm.isNew === true)
+            url = '/Product/Create';
+
+        $http.post(url, self.productForm.product)
             .success(function (product) {
-                product.Category = self.getCategory(product.CategoryId);
-                self.products.push(product);
+                if (self.productForm.isNew === true) {
+                    product.Category = self.getCategory(product.CategoryId);
+                    self.products.push(product);
+                }
             })
             .error(function (error) {
             });

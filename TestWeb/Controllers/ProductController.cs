@@ -52,5 +52,17 @@ namespace TestWeb.Controllers
                 Data = product
             };
         }
+
+        [HttpPost]
+        public JsonResult Update(Product product)
+        {
+            this.productRepo.Update(product);
+            this.productRepo.Save();
+
+            return new JsonResult()
+            {
+                Data = product
+            };
+        }
     }
 }
