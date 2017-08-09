@@ -35,6 +35,15 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     self.products = [];
     self.categories = [];
 
+    self.productForm = {};
+    self.newProductTitle = 'Create New Product';
+    self.defaultNewProduct = {
+        displayName: '',
+        category: {},
+        unitPrice: 0,
+        isActive: true
+    };
+
     self.init = function () {
         self.initializeProducts();
         self.initializeCategories();
@@ -59,11 +68,21 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     }
 
     self.showCreateForm = function () {
-        $("#createProductForm").modal('show');
+        self.productForm.mode = 'New';
+        self.productForm.title = self.newProductTitle;
+        self.productForm.product =
+        {
+            displayName: self.defaultNewProduct.displayName,
+            category: self.defaultNewProduct.category,
+            unitPrice: self.defaultNewProduct.unitPrice,
+            isActive: self.defaultNewProduct.isActive
+        };
+
+        $("#productForm").modal('show');
     }
 
-    self.closeForm = function (form) {
-        $("#" + form).modal('hide');
+    self.closeForm = function () {
+        $("#productForm").modal('hide');
     }
 
     self.init();
