@@ -8,10 +8,10 @@ namespace TestWeb.Controllers
 {
     public class ProductController : Controller
     {
-        IRepository<Product> productRepo;
+        IProductRepo productRepo;
         IRepository<Category> categoryRepo;
 
-        public ProductController(IRepository<Product> productRepo, IRepository<Category> categoryRepo)
+        public ProductController(IProductRepo productRepo, IRepository<Category> categoryRepo)
         {
             this.productRepo = productRepo;
             this.categoryRepo = categoryRepo;
@@ -25,13 +25,13 @@ namespace TestWeb.Controllers
         [HttpGet]
         public JsonResult List()
         {
-            return new CustomJsonResult() { Data = this.productRepo.GetAll().ToList() };
+            return new CustomJsonResult() { Data = this.productRepo.GetAll() };
         }
 
         [HttpGet]
         public JsonResult Categories()
         {
-            return new CustomJsonResult() { Data = this.categoryRepo.GetAll().ToList() };
+            return new CustomJsonResult() { Data = this.categoryRepo.GetAll() };
         }
     }
 }

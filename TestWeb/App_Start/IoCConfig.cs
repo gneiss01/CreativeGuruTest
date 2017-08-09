@@ -22,6 +22,10 @@ namespace TestWeb.App_Start
             builder.RegisterType<StoreContext>()
                 .As<DbContext>();
 
+            builder.RegisterType(typeof(ProductRepo))
+                .As(typeof(IProductRepo))
+                .InstancePerLifetimeScope();
+
             builder.RegisterGeneric(typeof(Repository<>))
                 .As(typeof(IRepository<>))
                 .InstancePerLifetimeScope();

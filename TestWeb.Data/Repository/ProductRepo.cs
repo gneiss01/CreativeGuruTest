@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TestWeb.Data.Repository
 {
-    public class ProductRepo : Repository<Product>
+    public class ProductRepo : Repository<Product>, IProductRepo
     {
         public ProductRepo(DbContext context) : base(context) { }
 
