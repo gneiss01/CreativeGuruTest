@@ -6,6 +6,8 @@ namespace TestWeb.Data.Repository
     {
         void Add(T entity);
 
+        void Update(T entity);
+
         void Delete(T entity);
 
         T FindByKey(params object[] keyValues);

@@ -20,6 +20,12 @@ namespace TestWeb.Data.Repository
             this.data.Add(entity);
         }
 
+        public void Update(T entity)
+        {
+            this.data.Add(entity);
+            this.context.Entry(entity).State = EntityState.Modified;
+        }
+
         public void Delete(T entity)
         {
             this.data.Remove(entity);
