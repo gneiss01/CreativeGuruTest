@@ -58,5 +58,13 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
             });
     }
 
+    self.showCreateForm = function () {
+        $("#createProductForm").modal('show');
+    }
+
+    self.closeForm = function (form) {
+        $("#" + form).modal('hide');
+    }
+
     self.init();
 }
