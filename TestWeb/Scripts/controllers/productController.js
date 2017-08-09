@@ -85,5 +85,11 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
         $("#productForm").modal('hide');
     }
 
+    self.editProduct = function (product) {
+    }
+
+    self.deleteProduct = function (product) {
+    }
+
     self.init();
 }
