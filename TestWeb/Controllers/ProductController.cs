@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using TestWeb.Data.Model;
 using TestWeb.Data.Repository;
@@ -37,6 +38,19 @@ namespace TestWeb.Controllers
         public JsonResult Categories()
         {
             return new CustomJsonResult() { Data = this.categoryRepo.GetAll() };
+        }
+
+        [HttpPost]
+        public JsonResult Create(Product product)
+        {
+            product.Id = Guid.NewGuid();
+            this.productRepo.Add(product);
+            this.productRepo.Save();
+
+            return new CustomJsonResult()
+            {
+                Data = product
+            };
         }
     }
 }
