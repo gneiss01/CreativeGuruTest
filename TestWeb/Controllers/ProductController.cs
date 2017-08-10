@@ -7,6 +7,7 @@ using TestWeb.Models;
 
 namespace TestWeb.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         IProductRepo productRepo;

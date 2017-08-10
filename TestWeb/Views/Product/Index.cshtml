@@ -4,12 +4,55 @@
 <h2>@ViewBag.Title</h2>
 <div ng-controller="productController">
     <div class="row">
+        <div id="modalForm" class="modal fade" tabindex="-1" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                        <h4 class="modal-title">{{ productForm.title }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Display Name</label>
+                                <input class="form-control" type="text" ng-model="productForm.product.DisplayName" placeholder="Display Name" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Category</label>
+                                <select ng-model="productForm.product.CategoryId">
+                                    <option value="">Select</option>
+                                    <option ng-repeat="category in categories" value="{{category.Id}}">{{category.DisplayName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Unit Price</label>
+                                <input class="form-control" placeholder="Unit Price" ng-model="productForm.product.UnitPrice" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Is Active</label>
+                                <input type="checkbox" ng-model="productForm.product.IsActive" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button button4" ng-click="saveProduct()">Save</button>
+                        <button type="button" class="btn btn-primary button button4" ng-click="closeForm()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-12">
             <input type="text" ng-model="productFilter.Product" placeholder="Search product" />
             <select ng-model="productFilter.Category" ng-options="category.DisplayName for category in categories">
                 <option value="">Select</option>
             </select>
-
+            @if (Roles.GetRolesForUser().Contains("admin"))
+            {
+                <button ng-click="showCreateForm()">Add Product</button>
+            }
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -17,6 +60,10 @@
                         <th>Category</th>
                         <th>Unit Price</th>
                         <th>Is Active</th>
+                        @if (Roles.GetRolesForUser().Contains("admin"))
+                        {
+                            <th>Action</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +72,12 @@
                         <td>{{ product.Category.DisplayName }}</td>
                         <td>{{ product.UnitPrice }}</td>
                         <td>{{ product.IsActive }}</td>
+                        @if (Roles.GetRolesForUser().Contains("admin")) {
+                            <td>
+                                <button ng-click="editProduct(product)">Edit</button>
+                                <button ng-click="deleteProduct(product)">Delete</button>
+                            </td>
+                        }
                     </tr>
                 </tbody>
             </table>
