@@ -131,25 +131,36 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     }
 
     self.saveProduct = function () {
-        var url = '/Product/Update';
-        if (self.productForm.isNew === true)
-            url = '/Product/Create';
+        if (self.validateForm() === true) {
+            var url = '/Product/Update';
+            if (self.productForm.isNew === true)
+                url = '/Product/Create';
 
-        $http.post(url, self.productForm.product)
-            .success(function (product) {
-                if (self.productForm.isNew === true) {
-                    product.Category = self.getCategory(product.CategoryId);
-                    self.products.push(product);
+            $http.post(url, self.productForm.product)
+                .success(function (product) {
+                    if (self.productForm.isNew === true) {
+                        product.Category = self.getCategory(product.CategoryId);
+                        self.products.push(product);
 
-                    self.setFormProduct(self.defaultNewProduct);
-                }
-                else {
-                    self.updateProduct(self.productForm.product);
-                    self.closeForm();
-                }
-            })
-            .error(function (error) {
-            });
+                        self.setFormProduct(self.defaultNewProduct);
+                    }
+                    else {
+                        self.updateProduct(self.productForm.product);
+                        self.closeForm();
+                    }
+                })
+                .error(function (error) {
+                });
+        }
+    }
+
+    self.validateForm = function () {
+        // just a basic validation
+        if (self.productForm.product.DisplayName === '' || self.productForm.product.CategoryId === '') {
+            alert('Please enter name and category.');
+            return false;
+        }
+        return true;
     }
 
     self.closeForm = function () {
