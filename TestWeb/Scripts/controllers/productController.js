@@ -46,7 +46,7 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     self.newProductTitle = 'Create New Product';
     self.defaultNewProduct = {
         DisplayName: '',
-        CategoryId: "",
+        Category: { Id: "" },
         UnitPrice: 0,
         IsActive: true
     };
@@ -77,28 +77,25 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     self.showCreateForm = function () {
         self.productForm.isNew = true;
         self.productForm.title = self.newProductTitle;
-        self.productForm.product =
-        {
-            DisplayName: self.defaultNewProduct.DisplayName,
-            CategoryId: self.defaultNewProduct.CategoryId,
-            UnitPrice: self.defaultNewProduct.UnitPrice,
-            IsActive: self.defaultNewProduct.IsActive
-        };
+        self.setFormProduct(self.defaultNewProduct);
 
         self.showForm();
+    }
+
+    self.setFormProduct = function (product) {
+        self.productForm.product =
+        {
+            DisplayName: product.DisplayName,
+            CategoryId: product.Category.Id,
+            UnitPrice: product.UnitPrice,
+            IsActive: product.IsActive
+        };
     }
 
     self.editProduct = function (product) {
         self.productForm.isNew = false
         self.productForm.title = 'Update Product';
-        self.productForm.product =
-        {
-            Id: product.Id,
-            DisplayName: product.DisplayName,
-            UnitPrice: product.UnitPrice,
-            IsActive: product.IsActive,
-            CategoryId: product.Category.Id
-        };
+        self.setFormProduct(product);
 
         self.showForm();
     }
@@ -120,6 +117,12 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
                 if (self.productForm.isNew === true) {
                     product.Category = self.getCategory(product.CategoryId);
                     self.products.push(product);
+
+                    self.setFormProduct(self.defaultNewProduct);
+                }
+                else {
+                    self.initializeProducts();
+                    self.closeForm();
                 }
             })
             .error(function (error) {
