@@ -32,6 +32,21 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     };
 
     self.products = [];
+    self.removeProduct = function (id) {
+        self.products = $.grep(self.products, function (product) {
+            return product.Id !== id;
+        });
+    }
+    self.updateProduct = function (product) {
+        $.each(self.products, function (i, prod) {
+            if (prod.Id === product.Id) {
+                product.Category = self.getCategory(product.CategoryId);
+                self.products[i] = product;
+                return false;
+            }
+        });
+    }
+
     self.categories = [];
     self.getCategory = function (id) {
         var result = $.grep(self.categories, function (category) {
@@ -45,6 +60,7 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     self.productForm = {};
     self.newProductTitle = 'Create New Product';
     self.defaultNewProduct = {
+        Id: '',
         DisplayName: '',
         Category: { Id: "" },
         UnitPrice: 0,
@@ -85,6 +101,7 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     self.setFormProduct = function (product) {
         self.productForm.product =
         {
+            Id: product.Id,
             DisplayName: product.DisplayName,
             CategoryId: product.Category.Id,
             UnitPrice: product.UnitPrice,
@@ -101,6 +118,12 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
     }
 
     self.deleteProduct = function (product) {
+        $http.post('/Product/Delete/' + product.Id)
+            .success(function (productId) {
+                self.removeProduct(productId);
+            })
+            .error(function (error) {
+            });
     }
 
     self.showForm = function () {
@@ -121,7 +144,7 @@ function productController($router, $scope, $location, $rootScope, $http, $windo
                     self.setFormProduct(self.defaultNewProduct);
                 }
                 else {
-                    self.initializeProducts();
+                    self.updateProduct(self.productForm.product);
                     self.closeForm();
                 }
             })
