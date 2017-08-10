@@ -64,5 +64,29 @@ namespace TestWeb.Controllers
                 Data = product
             };
         }
+
+        [HttpPost]
+        public ActionResult Delete(Guid id)
+        {
+            try
+            {
+                var product = this.productRepo.FindByKey(id);
+                if (product == null)
+                {
+                    Response.StatusCode = 404;
+                    return Json($"Product with Id:'{id}' does not exist.");
+                }
+
+                this.productRepo.Delete(product);
+                this.productRepo.Save();
+
+                return Json(id);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 505;
+                return Json(ex.Message);
+            }
+        }
     }
 }
